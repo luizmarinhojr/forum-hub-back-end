@@ -1,7 +1,6 @@
 package com.luizmarinho.forumhub.domain.topico;
 
-import com.luizmarinho.forumhub.domain.curso.Curso;
-import com.luizmarinho.forumhub.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,10 +11,12 @@ public record TopicoDTOEntrada(
         @NotEmpty
         String mensagem,
 
+        @JsonProperty(value = "autor_id")
         @NotNull
-        Usuario autor,
+        Long autorId,
 
+        @JsonProperty(value = "curso_id")
         @NotNull
-        Curso curso
+        Long cursoId
 ) {
 }

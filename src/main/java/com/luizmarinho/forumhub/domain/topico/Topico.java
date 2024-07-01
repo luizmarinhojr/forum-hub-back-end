@@ -45,11 +45,11 @@ public class Topico {
     @OneToMany(mappedBy = "topico")
     private Set<Resposta> respostas;
 
-    public Topico(TopicoDTOEntrada data) {
-        this.titulo = data.titulo();
-        this.mensagem = data.mensagem();
-        this.autor = data.autor();
-        this.curso = data.curso();
+    public Topico(TopicoDTOEntrada dado, Usuario autor, Curso curso) {
+        this.titulo = dado.titulo();
+        this.mensagem = dado.mensagem();
+        this.autor = autor;
+        this.curso = curso;
         this.dataCriacao = LocalDateTime.now();
         this.status = true;
     }
