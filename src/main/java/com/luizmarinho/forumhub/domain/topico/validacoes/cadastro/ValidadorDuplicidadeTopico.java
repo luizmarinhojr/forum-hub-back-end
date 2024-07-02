@@ -7,20 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidadorDuplicidadeTopico {
+public class ValidadorDuplicidadeTopico implements ValidadorInterface{
 
     @Autowired
     private TopicoRepository repository;
 
+    @Override
     public void validar(TopicoDTOEntrada topicoEntrada) {
-        var topicoTitulo = repository.buscarPorTituloIgual(topicoEntrada.titulo());
-        var topicoMensagem = repository.buscarPorMensagemIgual(topicoEntrada.mensagem());
-
-        if (topicoTitulo.isPresent()) {
+        if (repository.buscarPorTituloIgual(topicoEntrada.titulo()).isPresent()) {
             throw new ValidacaoException("Já existe um tópico com esse título");
         }
 
-        if (topicoMensagem.isPresent()) {
+        if (repository.buscarPorMensagemIgual(topicoEntrada.mensagem()).isPresent()) {
             throw new ValidacaoException("Já existe um tópico com essa mensagem");
         }
     }

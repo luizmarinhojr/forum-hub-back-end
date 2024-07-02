@@ -18,6 +18,7 @@ public class TopicoController {
     @Autowired
     private TopicoService service;
 
+
     @PostMapping
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados, UriComponentsBuilder uriBuilder) {
