@@ -25,4 +25,9 @@ public class Curso {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "curso")
     private Set<Topico> topicos;
+
+    public Curso(CursoDTOEntrada cursoEntrada) {
+        this.nome = cursoEntrada.nome();
+        this.categoria = cursoEntrada.categoria();
+    }
 }
