@@ -37,4 +37,12 @@ public class Resposta {
     private Usuario autor;
 
     private String solucao;
+
+    public Resposta(RespostaDTOEntrada respostaEntrada, Topico topico, Usuario autor) {
+        this.mensagem = respostaEntrada.mensagem();
+        this.topico = topico;
+        this.dataCriacao = LocalDateTime.now();
+        this.autor = autor;
+        this.solucao = respostaEntrada.solucao();
+    }
 }

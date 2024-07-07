@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -40,6 +41,7 @@ public class Topico {
     @JsonProperty(value = "curso_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
+    @Setter
     private Curso curso;
 
     @OneToMany(mappedBy = "topico")
@@ -52,5 +54,23 @@ public class Topico {
         this.curso = curso;
         this.dataCriacao = LocalDateTime.now();
         this.status = true;
+    }
+
+    protected void atualizar(TopicoDTOAtualizacao topicoAtualizacao) {
+        if (topicoAtualizacao.titulo() != null) {
+            this.titulo = topicoAtualizacao.titulo();
+        }
+
+        if (topicoAtualizacao.mensagem() != null) {
+            this.mensagem = topicoAtualizacao.mensagem();
+        }
+
+        if (topicoAtualizacao.status() != null) {
+            this.status = topicoAtualizacao.status();
+        }
+    }
+
+    protected void excluir() {
+        this.status = false;
     }
 }

@@ -38,4 +38,10 @@ public class Usuario {
             joinColumns = @JoinColumn(name="usuario_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name="perfil_id", nullable = false))
     private Set<Perfil> perfis;
+
+    public Usuario(UsuarioDTOEntrada usuarioEntrada) {
+        this.nome = usuarioEntrada.nome();
+        this.email = usuarioEntrada.email();
+        this.senha = usuarioEntrada.senha();
+    }
 }

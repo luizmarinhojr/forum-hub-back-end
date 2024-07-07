@@ -3,6 +3,7 @@ package com.luizmarinho.forumhub.controller;
 import com.luizmarinho.forumhub.domain.topico.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -28,7 +29,7 @@ public class TopicoController {
     }
 
     @GetMapping
-    public ResponseEntity listar(@PageableDefault(size = 10, sort = {"data_criacao"}, direction = Sort.Direction.DESC) Pageable paginacao) {
+    public ResponseEntity<Page<TopicoDTOSaida>> listar(@PageableDefault(size = 10, sort = {"data_criacao"}, direction = Sort.Direction.DESC) Pageable paginacao) {
         var pagina = service.listar(paginacao);
         return ResponseEntity.ok(pagina);
     }
@@ -39,7 +40,17 @@ public class TopicoController {
         return ResponseEntity.ok(topico);
     }
 
-    public ResponseEntity atualizar() {
-        return ResponseEntity.ok("temporary");
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid TopicoDTOAtualizacao topicoDados) {
+        var topico = service.atualizar(id, topicoDados);
+        return ResponseEntity.ok(topico);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 }

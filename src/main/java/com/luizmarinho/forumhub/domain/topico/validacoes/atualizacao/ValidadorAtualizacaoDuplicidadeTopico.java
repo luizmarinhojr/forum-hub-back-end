@@ -1,24 +1,24 @@
-package com.luizmarinho.forumhub.domain.topico.validacoes.cadastro;
+package com.luizmarinho.forumhub.domain.topico.validacoes.atualizacao;
 
 import com.luizmarinho.forumhub.domain.ValidacaoException;
-import com.luizmarinho.forumhub.domain.topico.TopicoDTOEntrada;
+import com.luizmarinho.forumhub.domain.topico.TopicoDTOAtualizacao;
 import com.luizmarinho.forumhub.domain.topico.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidadorDuplicidadeTopico implements ValidadorCadastro {
+public class ValidadorAtualizacaoDuplicidadeTopico implements ValidadorAtualizacao{
 
     @Autowired
     private TopicoRepository repository;
 
     @Override
-    public void validar(TopicoDTOEntrada topicoEntrada) {
-        if (repository.buscarPorTituloIgual(topicoEntrada.titulo()).isPresent()) {
+    public void validar(TopicoDTOAtualizacao topicoAtualizacao) {
+        if (repository.buscarPorTituloIgual(topicoAtualizacao.titulo()).isPresent()) {
             throw new ValidacaoException("Já existe um tópico com esse título");
         }
 
-        if (repository.buscarPorMensagemIgual(topicoEntrada.mensagem()).isPresent()) {
+        if (repository.buscarPorMensagemIgual(topicoAtualizacao.mensagem()).isPresent()) {
             throw new ValidacaoException("Já existe um tópico com essa mensagem");
         }
     }

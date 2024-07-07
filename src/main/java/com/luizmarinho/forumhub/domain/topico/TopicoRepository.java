@@ -16,6 +16,6 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
     @Query(value = "SELECT * FROM topico WHERE mensagem = :mensagem", nativeQuery = true)
     Optional<Topico> buscarPorMensagemIgual(@Param("mensagem") String mensagem);
 
-    @Query(value = "SELECT * FROM topico WHERE status = 1", nativeQuery = true)
-    Page<Topico> buscarPorTodosTopicosAtivos(Pageable paginacao);
+    @Query(value = "SELECT * FROM topico", nativeQuery = true)
+    Page<Topico> buscarPorTodosTopicos(Pageable paginacao);
 }
