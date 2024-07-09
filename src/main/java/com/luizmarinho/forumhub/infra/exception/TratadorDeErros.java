@@ -1,4 +1,4 @@
-package com.luizmarinho.forumhub.infra;
+package com.luizmarinho.forumhub.infra.exception;
 
 import com.luizmarinho.forumhub.domain.ValidacaoException;
 import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;

@@ -3,6 +3,9 @@ package com.luizmarinho.forumhub.domain.usuario;
 import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;
 import com.luizmarinho.forumhub.domain.usuario.validacoes.cadastro.ValidadorUsuarioCadastro;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.config.authentication.PasswordEncoderParser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,25 +14,29 @@ import java.util.List;
 public class UsuarioService {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    List<ValidadorUsuarioCadastro> validadores;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private List<ValidadorUsuarioCadastro> validadores;
 
     public UsuarioDTOSaida cadastrar(UsuarioDTOEntrada usuarioEntrada) {
         validadores.forEach(d -> d.validar(usuarioEntrada));
-        var usuario = new Usuario(usuarioEntrada);
+        var senhaEncoder = passwordEncoder.encode(usuarioEntrada.senha());
+        var usuario = new Usuario(usuarioEntrada, senhaEncoder);
         usuarioRepository.save(usuario);
         return new UsuarioDTOSaida(usuario);
     }
 
     public UsuarioDTOSaida detalhar(String email) {
-        var usuario = usuarioRepository.buscarUsuarioPorEmailDTO(email);
+        var usuario = usuarioRepository.buscarUsuarioPorEmail(email);
 
         if (usuario.isEmpty()) {
             throw new ValidacaoExceptionNotFound("E-mail não encontrado");
         }
 
-        return usuario.get();
+        return new UsuarioDTOSaida(usuario.get());
     }
 }
