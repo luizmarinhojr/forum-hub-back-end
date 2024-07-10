@@ -4,10 +4,12 @@ import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;
 import com.luizmarinho.forumhub.domain.curso.CursoRepository;
 import com.luizmarinho.forumhub.domain.topico.validacoes.atualizacao.ValidadorAtualizacao;
 import com.luizmarinho.forumhub.domain.topico.validacoes.cadastro.ValidadorCadastro;
+import com.luizmarinho.forumhub.domain.usuario.Usuario;
 import com.luizmarinho.forumhub.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -30,10 +32,10 @@ public class TopicoService {
     private List<ValidadorAtualizacao> validadoresAtualizacao;
 
 
-    public TopicoDTOSaida cadastrar(TopicoDTOEntrada topicoEntrada) {
+    public TopicoDTOSaida cadastrar(Authentication authentication, TopicoDTOEntrada topicoEntrada) {
         validadoresCadastro.forEach(d -> d.validar(topicoEntrada));
         var curso = cursoRepository.getReferenceById(topicoEntrada.cursoId());
-        var usuario = usuarioRepository.getReferenceById(topicoEntrada.autorId());
+        var usuario = usuarioRepository.getReferenceById(((Usuario) authentication.getPrincipal()).getId());
         Topico topico = new Topico(topicoEntrada, usuario, curso);
         topicoRepository.save(topico);
 
@@ -62,13 +64,11 @@ public class TopicoService {
         topicoBd.atualizar(topicoAtualizacao);
 
         return new TopicoDTOSaida(topicoBd);
-
     }
 
     public void excluir(Long id) {
         verificarTopicoId(id);
-        var topico = topicoRepository.getReferenceById(id);
-        topico.excluir();
+        topicoRepository.deleteById(id);
     }
 
     private void verificarTopicoId(Long id) {

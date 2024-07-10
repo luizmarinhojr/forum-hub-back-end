@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,8 +23,8 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados, UriComponentsBuilder uriBuilder) {
-        var topico = service.cadastrar(topicoDados);
+    public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados, Authentication authentication, UriComponentsBuilder uriBuilder) {
+        var topico = service.cadastrar(authentication, topicoDados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.id()).toUri();
         return ResponseEntity.created(uri).body(topico);
     }
@@ -42,7 +43,7 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid TopicoDTOAtualizacao topicoDados) {
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid TopicoDTOAtualizacao topicoDados, Authentication authentication) {
         var topico = service.atualizar(id, topicoDados);
         return ResponseEntity.ok(topico);
     }

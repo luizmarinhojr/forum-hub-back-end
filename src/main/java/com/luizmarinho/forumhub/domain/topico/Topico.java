@@ -44,7 +44,7 @@ public class Topico {
     @Setter
     private Curso curso;
 
-    @OneToMany(mappedBy = "topico")
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.REMOVE)
     private Set<Resposta> respostas;
 
     public Topico(TopicoDTOEntrada dado, Usuario autor, Curso curso) {

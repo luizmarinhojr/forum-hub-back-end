@@ -11,10 +11,6 @@ public record TopicoDTOEntrada(
         @NotEmpty
         String mensagem,
 
-        @JsonProperty(value = "autor_id")
-        @NotNull
-        Long autorId,
-
         @JsonProperty(value = "curso_id")
         @NotNull
         Long cursoId
