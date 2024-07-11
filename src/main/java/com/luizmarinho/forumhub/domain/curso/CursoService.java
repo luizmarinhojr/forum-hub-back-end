@@ -2,6 +2,7 @@ package com.luizmarinho.forumhub.domain.curso;
 
 import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service

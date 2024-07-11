@@ -1,7 +1,9 @@
 package com.luizmarinho.forumhub.domain.resposta;
 
 import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionAuthorization;
 import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
+import com.luizmarinho.forumhub.domain.perfil.Perfil;
 import com.luizmarinho.forumhub.domain.resposta.validacoes.cadastro.ValidadorRespostaCadastro;
 import com.luizmarinho.forumhub.domain.topico.StatusEnum;
 import com.luizmarinho.forumhub.domain.topico.TopicoRepository;
@@ -13,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RespostaService {
@@ -63,5 +66,39 @@ public class RespostaService {
         }
 
         throw new ValidacaoExceptionNotFound("Id da resposta informado não existe ou não pertence a esse tópico");
+    }
+
+    public void excluir(Long id, Authentication authentication) {
+        var usuario = (Usuario) authentication.getPrincipal();
+        var resposta = respostaRepository.findById(id);
+        verificarRespostaId(resposta);
+        boolean isAdmin = verificarIsAdmin(usuario);
+        if (isAdmin || usuario.getId().equals(resposta.get().getAutor().getId())) {
+            boolean respostaIsDiferenteNull = resposta.get().getTopico().getSolucaoResposta() != null;
+            if (respostaIsDiferenteNull) {
+                Long solucaoResposta = resposta.get().getTopico().getSolucaoResposta().getId();
+                if (solucaoResposta.equals(resposta.get().getId())) {
+                    throw new ValidacaoException("Não é possível remover uma resposta que está marcada como solução de um tópico");
+                }
+            }
+            respostaRepository.delete(resposta.get());
+        } else {
+            throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para excluir a resposta");
+        }
+    }
+
+    private boolean verificarIsAdmin(Usuario usuario) {
+        for (Perfil perfil : usuario.getPerfis()) {
+            if(perfil.getNome().equals("ROLE_ADM")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void verificarRespostaId(Optional<Resposta> resposta) {
+        if (resposta.isEmpty()) {
+            throw new ValidacaoExceptionNotFound("Id da resposta informado não existe");
+        }
     }
 }

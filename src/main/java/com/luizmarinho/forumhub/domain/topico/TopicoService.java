@@ -1,6 +1,7 @@
 package com.luizmarinho.forumhub.domain.topico;
 
 import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionAuthorization;
 import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
 import com.luizmarinho.forumhub.domain.curso.CursoRepository;
 import com.luizmarinho.forumhub.domain.perfil.Perfil;
@@ -67,7 +68,7 @@ public class TopicoService {
         boolean ehAdmin = verificarIsAdmin(usuario);
 
         if (!ehAdmin && !topicoBd.getAutor().getId().equals(usuario.getId())) {
-            throw new ValidacaoException("O usuário não possui permissão para alterar o tópico");
+            throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para alterar o tópico");
         }
 
         if (topicoAtualizacao.cursoId() != null) {
@@ -87,9 +88,16 @@ public class TopicoService {
         return new TopicoDTOSaida(topicoBd);
     }
 
-    public void excluir(Long id) {
+    public void excluir(Long id, Authentication authentication) {
+        var usuario = (Usuario) authentication.getPrincipal();
         verificarTopicoId(id);
-        topicoRepository.deleteById(id);
+        var topicoBd = topicoRepository.getReferenceById(id);
+        boolean isAdmin = verificarIsAdmin(usuario);
+        if (isAdmin || topicoBd.getAutor().getId().equals(usuario.getId())) {
+            topicoRepository.deleteById(id);
+        } else {
+            throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para excluir o tópico");
+        }
     }
 
     private void verificarTopicoId(Long id) {

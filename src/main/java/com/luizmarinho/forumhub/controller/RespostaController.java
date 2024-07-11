@@ -3,6 +3,7 @@ package com.luizmarinho.forumhub.controller;
 import com.luizmarinho.forumhub.domain.resposta.RespostaDTOEntrada;
 import com.luizmarinho.forumhub.domain.resposta.RespostaDTOSaida;
 import com.luizmarinho.forumhub.domain.resposta.RespostaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class RespostaController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity cadastrar(
             @RequestBody @Valid RespostaDTOEntrada respostaEntrada,
             @PathVariable("topico_id") Long topicoId,
@@ -52,5 +54,13 @@ public class RespostaController {
     {
         var resposta = service.detalhar(topicoId, respostaId);
         return ResponseEntity.ok(resposta);
+    }
+
+    @DeleteMapping("/{resposta_id}")
+    @Transactional
+    @SecurityRequirement(name = "bearer-key")
+    public ResponseEntity excluir(@PathVariable("resposta_id") Long id, Authentication authentication) {
+        service.excluir(id, authentication);
+        return ResponseEntity.noContent().build();
     }
 }

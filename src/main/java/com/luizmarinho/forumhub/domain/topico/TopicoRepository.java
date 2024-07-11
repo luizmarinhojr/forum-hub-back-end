@@ -18,7 +18,4 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
     @Query(value = "SELECT * FROM topicos", nativeQuery = true)
     Page<Topico> buscarPorTodosTopicos(Pageable paginacao);
-
-//    @Query(value = "UPDATE topicos SET status = :status WHERE id = :id", nativeQuery = true)
-//    Topico atualizarTopicoPorId(@Param("status") StatusEnum status, @Param("id") Long id);
 }

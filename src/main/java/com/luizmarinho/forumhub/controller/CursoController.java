@@ -4,9 +4,11 @@ import com.luizmarinho.forumhub.domain.curso.Curso;
 import com.luizmarinho.forumhub.domain.curso.CursoDTOEntrada;
 import com.luizmarinho.forumhub.domain.curso.CursoDTOSaida;
 import com.luizmarinho.forumhub.domain.curso.CursoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,7 @@ public class CursoController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity cadastrar(@RequestBody @Valid CursoDTOEntrada cursoEntrada, UriComponentsBuilder uriBuilder) {
         Curso curso = service.cadastrar(cursoEntrada);
 

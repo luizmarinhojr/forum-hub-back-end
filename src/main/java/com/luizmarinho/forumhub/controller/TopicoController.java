@@ -1,6 +1,7 @@
 package com.luizmarinho.forumhub.controller;
 
 import com.luizmarinho.forumhub.domain.topico.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados, Authentication authentication, UriComponentsBuilder uriBuilder) {
         var topico = service.cadastrar(authentication, topicoDados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.id()).toUri();
@@ -43,6 +45,7 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid TopicoDTOAtualizacao topicoDados, Authentication authentication) {
         var topico = service.atualizar(id, topicoDados, authentication);
         return ResponseEntity.ok(topico);
@@ -50,8 +53,9 @@ public class TopicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @SecurityRequirement(name = "bearer-key")
+    public ResponseEntity excluir(@PathVariable Long id, Authentication authentication) {
+        service.excluir(id, authentication);
         return ResponseEntity.noContent().build();
     }
 }

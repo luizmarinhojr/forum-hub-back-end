@@ -1,6 +1,7 @@
 package com.luizmarinho.forumhub.infra.exception;
 
 import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionAuthorization;
 import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,6 +26,11 @@ public class TratadorDeErros {
     public ResponseEntity tratarErroValidacaoCamposObrigatorios(MethodArgumentNotValidException ex) {
         var errors = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(errors.stream().map(ValidationMethodArgumentDTO::new));
+    }
+
+    @ExceptionHandler(ValidacaoExceptionAuthorization.class)
+    public ResponseEntity tratarErroValidacao403NaoAutorizado(ValidacaoExceptionAuthorization ex) {
+        return ResponseEntity.status(401).body(new ValidationExceptionDTO(ex.getMessage()));
     }
 
     private record ValidationExceptionDTO(String mensagem) {
