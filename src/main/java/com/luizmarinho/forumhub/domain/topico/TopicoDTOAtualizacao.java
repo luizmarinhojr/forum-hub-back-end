@@ -7,9 +7,12 @@ public record TopicoDTOAtualizacao(
 
         String mensagem,
 
-        Boolean status,
+        StatusEnum status,
 
         @JsonProperty(value = "curso_id")
-        Long cursoId
+        Long cursoId,
+
+        @JsonProperty(value = "solucao_resposta_id", defaultValue = "Ainda sem solução")
+        Long solucaoId
 ) {
 }

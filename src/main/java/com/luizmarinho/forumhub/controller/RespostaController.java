@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,9 +27,10 @@ public class RespostaController {
     public ResponseEntity cadastrar(
             @RequestBody @Valid RespostaDTOEntrada respostaEntrada,
             @PathVariable("topico_id") Long topicoId,
+            Authentication authentication,
             UriComponentsBuilder uriBuilder)
     {
-        var resposta = service.cadastrar(respostaEntrada, topicoId);
+        var resposta = service.cadastrar(respostaEntrada, topicoId, authentication);
 
         var uri = uriBuilder.path("/resposta/{id}").buildAndExpand(resposta.id()).toUri();
         return ResponseEntity.created(uri).body(resposta);

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @Query(value = "SELECT * FROM usuario WHERE email = :email", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios WHERE email = :email", nativeQuery = true)
     Optional<Usuario> buscarUsuarioPorEmail(@Param("email") String email);
 
     UserDetails findByEmail(String email);

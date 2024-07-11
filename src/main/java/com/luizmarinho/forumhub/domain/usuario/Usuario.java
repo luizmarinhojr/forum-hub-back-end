@@ -11,11 +11,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,11 +38,12 @@ public class Usuario implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "autor")
     private Set<Resposta> resposta;
 
-    @ManyToMany
-    @JoinTable(name = "usuario_perfis",
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "usuarios_perfis",
             joinColumns = @JoinColumn(name="usuario_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name="perfil_id", nullable = false))
-    private Set<Perfil> perfis;
+    private Set<Perfil> perfis = new HashSet<>();
+
 
     public Usuario(UsuarioDTOEntrada usuarioEntrada) {
         this.nome = usuarioEntrada.nome();
@@ -49,10 +51,27 @@ public class Usuario implements UserDetails {
         this.senha = usuarioEntrada.senha();
     }
 
-    public Usuario(UsuarioDTOEntrada usuarioEntrada, String senha) {
+    public Usuario(UsuarioDTOEntrada usuarioEntrada, String senha, Perfil perfil) {
         this.nome = usuarioEntrada.nome();
         this.email = usuarioEntrada.email();
         this.senha = senha;
+        this.perfis.add(perfil);
+    }
+
+    public void adicionarPerfil(Perfil perfil) {
+        this.perfis.add(perfil);
+    }
+
+    public void atualizarUsuario(UsuarioDTOAtualizacao usuarioAtualizacao) {
+        if (usuarioAtualizacao.email() != null) {
+            this.email = usuarioAtualizacao.email();
+        }
+        if (usuarioAtualizacao.nome() != null) {
+            this.nome = usuarioAtualizacao.nome();
+        }
+        if (usuarioAtualizacao.senha() != null) {
+            this.senha = usuarioAtualizacao.senha();
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "topico")
+@Table(name = "topicos")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +31,9 @@ public class Topico {
     @JsonProperty(value = "data_criacao")
     private LocalDateTime dataCriacao;
 
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    @Setter
+    private StatusEnum status;
 
     @JsonProperty(value = "autor_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,13 +49,19 @@ public class Topico {
     @OneToMany(mappedBy = "topico", cascade = CascadeType.REMOVE)
     private Set<Resposta> respostas;
 
+    @JsonProperty("solucao_resposta_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "solucao_resposta_id")
+    @Setter
+    private Resposta solucaoResposta;
+
     public Topico(TopicoDTOEntrada dado, Usuario autor, Curso curso) {
         this.titulo = dado.titulo();
         this.mensagem = dado.mensagem();
         this.autor = autor;
         this.curso = curso;
         this.dataCriacao = LocalDateTime.now();
-        this.status = true;
+        this.status = StatusEnum.NAO_RESPONDIDO;
     }
 
     protected void atualizar(TopicoDTOAtualizacao topicoAtualizacao) {
@@ -68,9 +76,5 @@ public class Topico {
         if (topicoAtualizacao.status() != null) {
             this.status = topicoAtualizacao.status();
         }
-    }
-
-    protected void excluir() {
-        this.status = false;
     }
 }

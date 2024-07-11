@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
-    @Query(value = "SELECT * FROM curso WHERE nome = :nome", nativeQuery = true)
+    @Query(value = "SELECT * FROM cursos WHERE nome = :nome", nativeQuery = true)
     Optional<Curso> buscarPorNomeIgual(@Param("nome") String nome);
 }

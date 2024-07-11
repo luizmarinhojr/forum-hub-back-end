@@ -1,7 +1,6 @@
 package com.luizmarinho.forumhub.domain.topico.validacoes.cadastro;
 
-import com.luizmarinho.forumhub.domain.ValidacaoException;
-import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
 import com.luizmarinho.forumhub.domain.curso.CursoRepository;
 import com.luizmarinho.forumhub.domain.topico.TopicoDTOEntrada;
 import org.springframework.beans.factory.annotation.Autowired;

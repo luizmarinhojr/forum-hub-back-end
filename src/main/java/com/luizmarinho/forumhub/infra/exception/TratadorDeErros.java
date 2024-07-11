@@ -1,7 +1,7 @@
 package com.luizmarinho.forumhub.infra.exception;
 
-import com.luizmarinho.forumhub.domain.ValidacaoException;
-import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

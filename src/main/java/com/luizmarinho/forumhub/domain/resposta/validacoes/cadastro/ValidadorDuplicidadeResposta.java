@@ -1,7 +1,7 @@
 package com.luizmarinho.forumhub.domain.resposta.validacoes.cadastro;
 
-import com.luizmarinho.forumhub.domain.ValidacaoException;
-import com.luizmarinho.forumhub.domain.ValidacaoExceptionNotFound;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoExceptionNotFound;
 import com.luizmarinho.forumhub.domain.resposta.RespostaDTOEntrada;
 import com.luizmarinho.forumhub.domain.resposta.RespostaRepository;
 import com.luizmarinho.forumhub.domain.topico.TopicoRepository;

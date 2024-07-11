@@ -1,6 +1,6 @@
 package com.luizmarinho.forumhub.domain.topico.validacoes.atualizacao;
 
-import com.luizmarinho.forumhub.domain.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
 import com.luizmarinho.forumhub.domain.topico.TopicoDTOAtualizacao;
 import com.luizmarinho.forumhub.domain.topico.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

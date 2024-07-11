@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "resposta")
+@Table(name = "respostas")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +37,9 @@ public class Resposta {
     private Usuario autor;
 
     private String solucao;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "solucaoResposta")
+    private Topico solucaoTopico;
 
     public Resposta(RespostaDTOEntrada respostaEntrada, Topico topico, Usuario autor) {
         this.mensagem = respostaEntrada.mensagem();

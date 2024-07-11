@@ -6,10 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "perfil")
+@Table(name = "perfis")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +22,10 @@ public class Perfil {
 
     private String nome;
 
-    @ManyToMany(mappedBy = "perfis")
-    private Set<Usuario> usuarios;
+    @ManyToMany(mappedBy = "perfis", fetch = FetchType.EAGER)
+    private Set<Usuario> usuarios = new HashSet<>();
+
+    public Perfil(PerfilDTOEntrada perfilEntrada) {
+        this.nome = perfilEntrada.nome();
+    }
 }

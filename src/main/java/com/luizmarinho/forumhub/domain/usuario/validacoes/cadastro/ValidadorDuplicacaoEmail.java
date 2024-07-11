@@ -1,6 +1,6 @@
 package com.luizmarinho.forumhub.domain.usuario.validacoes.cadastro;
 
-import com.luizmarinho.forumhub.domain.ValidacaoException;
+import com.luizmarinho.forumhub.domain.exception.ValidacaoException;
 import com.luizmarinho.forumhub.domain.usuario.UsuarioDTOEntrada;
 import com.luizmarinho.forumhub.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

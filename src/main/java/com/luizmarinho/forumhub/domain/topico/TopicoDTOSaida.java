@@ -9,12 +9,24 @@ public record TopicoDTOSaida(
         String titulo,
         String mensagem,
         @JsonProperty(value = "data_criacao") LocalDateTime dataCriacao,
-        @JsonProperty(value = "autor_id") Long autorId,
-        @JsonProperty(value = "curso_id") Long cursoId
+        @JsonProperty(value = "nome_autor") String nomeAutor,
+        StatusEnum status,
+        String curso,
+        @JsonProperty(value = "contagem_respostas", defaultValue = "Ainda não há respostas") Integer contagemRespostas,
+        @JsonProperty(value = "solucao_resposta_id", defaultValue = "Ainda sem solução especificada") Long resposta_id
 ) {
 
     public TopicoDTOSaida (Topico topico) {
-        this(topico.getId(), topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao() , topico.getAutor().getId(), topico.getCurso().getId());
+        this(
+            topico.getId(),
+            topico.getTitulo(),
+            topico.getMensagem(),
+            topico.getDataCriacao(),
+            topico.getAutor().getNome(),
+            topico.getStatus(),
+            topico.getCurso().getNome(),
+            topico.getRespostas() == null ? 0 : topico.getRespostas().size(),
+            topico.getSolucaoResposta() == null ? null : topico.getSolucaoResposta().getId());
     }
 
 }

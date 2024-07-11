@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 public record RespostaDTOSaida(
         Long id,
         String mensagem,
+        String solucao,
+        String autor,
         @JsonProperty("data_criacao") LocalDateTime dataCriacao,
-        @JsonProperty("topico_id") Long topicoId,
-        @JsonProperty("usuario_id") Long usuarioId,
-        String solucao
+        @JsonProperty("topico_id") Long topicoId
 ) {
     public RespostaDTOSaida(Resposta resposta) {
-        this(resposta.getId(), resposta.getMensagem(), resposta.getDataCriacao(), resposta.getTopico().getId(), resposta.getAutor().getId(), resposta.getSolucao());
+        this(resposta.getId(), resposta.getMensagem(), resposta.getSolucao(), resposta.getAutor().getNome(), resposta.getDataCriacao(), resposta.getTopico().getId());
     }
 }

@@ -1,4 +1,4 @@
-package com.luizmarinho.forumhub.domain;
+package com.luizmarinho.forumhub.domain.exception;
 
 public class ValidacaoExceptionNotFound extends RuntimeException{
 
