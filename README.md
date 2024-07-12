@@ -12,7 +12,16 @@ Gerenciamento completo de um fórum web.
 * [Tecnologias utilizadas](#tecnologias-utilizadas)
 * [Diagrama do banco de dados](#diagrama)
 * [Descrição dos Endpoints](#endpoints)
-   * [/topicos](#topicos)
+    * [/usuarios](usuarios)
+    * [/login](#login)
+    * [/topicos](#topicos)
+    * [/topicos/{id}](#topicos_id)
+    * [/usuarios/{usuario_id}](#usuarios_id)
+    * [/topicos/{topico_id}/respostas](#topicos_id_respostas)
+    * [/topicos/{topico_id}/respostas/{resposta_id}](#topicos_id_respostas_id)
+    * [/perfil](#perfil)
+    * [/curso](#curso)
+* [/seguranca](#seguranca)
 
 <a id="diagrama"></a>
 ## Diagrama do banco de dados
@@ -24,6 +33,7 @@ Gerenciamento completo de um fórum web.
 <a id="endpoints"></a>
 ## Descrição dos Endpoints
 
+<a id="usuarios"></a>
 ### Endpoint ``/usuarios``
 
 **POST** : Cadastra um novo usuário no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint.
@@ -76,6 +86,7 @@ Onde: Nenhum dos campos é obrigatório
 
 <br>
 
+<a id="login"></a>
 ### Endpoint ``/login``
 
 **POST** : Se autentica no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint
@@ -183,6 +194,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="topicos_id"></a>
 ### Endpoint ``/topicos/{id}``
 
 Onde: ``{id}`` = id do tópico que deseja acessar
@@ -238,6 +250,7 @@ Onde: Nenhum dos campos é obrigatório. O status deve ser preenchido com uma da
 
 <br>
 
+<a id="usuarios_id"></a>
 ### Endpoint ``/usuarios/{usuario_id}``
 
 Onde: ``{usuario_id}`` = id do usuário que deseja acessar.
@@ -257,6 +270,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="topicos_id_respostas"></a>
 ### Endpoint ``/topicos/{topico_id}/respostas``
 
 Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
@@ -327,6 +341,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="topicos_id_respostas_id"></a>
 ### Endpoint ``/topicos/{topico_id}/respostas/{resposta_id}``
 
 Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
@@ -355,6 +370,7 @@ Onde: ``{resposta_id}`` = id da resposta do tópico que deseja detalhar.
 
 <br>
 
+<a id="perfil"></a>
 ### Endpoint ``/perfil``
 
 **POST** : Cadastra novos perfis ao sistema. O usuário autenticado necessita ter o perfil de administrador para cadastrar novos perfis.
@@ -370,6 +386,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="curso"></a>
 ### Endpoint ``/curso``
 
 **POST** : Cadastra um novo curso no sistema. O usuário precisa estar cadastrado e autenticado para cadastrar um novo curso. O curso não pode possuir nome igual a qualquer outro curso já cadastrado no sistema.
@@ -387,6 +404,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="seguranca"></a>
 ## Informações de Segurança
 
 A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
