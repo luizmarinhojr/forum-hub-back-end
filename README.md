@@ -40,10 +40,8 @@ ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root pad
       "senha": "digite_uma_senha_valida"
     }
    ```
-   
-6. Feito isso sua senha está alterada e agora sua aplicação segura.
-
-<br>
+6. Cole o token no campo que se refere a Auth e Bearer Token.
+7. Feito isso sua senha estará alterada e sua aplicação segura.
 
 ## Diagrama do banco de dados
 
