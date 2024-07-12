@@ -7,7 +7,6 @@ API para o back-end do fórum hub.
 ### Endpoint ``/topicos``
 
 **GET** : Lista todos os tópicos cadastrados. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
-
 * Envio do modelo da consulta da requisição obrigatório:
 
 ```
@@ -73,8 +72,7 @@ API para o back-end do fórum hub.
 <br>
 
 **POST** : O usuário precisa estar cadastrado e autenticado para cadastrar um novo tópico. O tópico não pode possuir titulo ou mensagem igual a qualquer outro tópico já cadastrado em todo o sistema.
-
-* Envio do modelo do corpo da requisição para envio obrigatório do Json para cadastro de novo tópico com o método de requisição POST:
+* Envio do modelo da consulta da requisição:
 
 ```
 {
@@ -84,7 +82,7 @@ API para o back-end do fórum hub.
 }
 ```
 
-Onde: ``titulo``, ``mensagem`` e ``curso_id`` são obrigatórios.
+Onde: Todos os campos são obrigatórios.
 
 <br>
 
@@ -94,7 +92,7 @@ Onde: ``{id}`` = id do tópico que deseja acessar
 
 **GET** : Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
 * Não é necessário inserir Json no corpo do envio da requisição.
-* Resposta da consulta:
+* Resposta da consulta com ``/topicos/1``:
 
 ```
 {
@@ -122,7 +120,6 @@ Onde: ``{id}`` = id do tópico que deseja acessar
 <br>
 
 **PUT** : O usuário autenticado necessita ter o perfil de administrador ou ser o próprio autor do tópico para que possa realizar a atualização.
-
 * Envio do modelo da consulta da requisição:
 
 ```
@@ -134,6 +131,7 @@ Onde: ``{id}`` = id do tópico que deseja acessar
   "solucao_resposta_id": 0
 }
 ```
+
 Onde: Nenhum dos campos é obrigatório. O status deve ser preenchido com uma das opções do Enum = [ "NAO_RESPONDIDO" ou "RESPONDIDO" ou "SOLUCIONADO" ], caso "SOLUCIONADO", deve-se, obrigatoriamente, indicar o id da resposta que sustenta a solução do tópico.
 
 <br>
@@ -162,7 +160,7 @@ Onde: Nenhum dos campos é obrigatório. O status deve ser preenchido com uma da
 
 <br>
 
-**PUT** : O usuário precisa estar cadastrado e autenticado para que possa detalhar o próprio perfil. Somente quem pode adicionar novos perfis ao próprio usuário é o usuário com perfil de administrador
+**PUT** : O usuário precisa estar cadastrado e autenticado para que possa atualizar o próprio perfil. Somente quem pode adicionar novos perfis ao próprio usuário é o usuário com perfil de administrador
 * Envio do modelo da consulta da requisição:
 
 ```
@@ -190,7 +188,180 @@ Onde: Nenhum dos campos é obrigatório
   "senha": "string"
 }
 ```
+
 Onde: Todos os campos são obrigatórios.
 
 <br>
 
+### Endpoint ``/usuarios/{usuario_id}``
+
+Onde: ``{usuario_id}`` = id do usuário que deseja acessar.
+
+**PATCH** : Atualiza o perfil de um determinado usuário. O usuário autenticado necessita ter o perfil de administrador para que possa adicionar perfis de outros usuários.
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "perfil_id": [
+    0
+  ]
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+<br>
+
+### Endpoint ``/topicos/{topico_id}/respostas``
+
+Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
+
+**GET** : Lista todas as respostas do tópico selecionado. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint
+
+* Envio do modelo da consulta da requisição obrigatório:
+
+```
+{}
+```
+
+* Resposta da consulta com ``/topicos/1/respostas``:
+
+```
+{
+  "totalElements": 1,
+  "totalPages": 1,
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 10,
+    "sort": {
+      "sorted": true,
+      "unsorted": false,
+      "empty": false
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "first": true,
+  "last": true,
+  "size": 10,
+  "content": [
+    {
+      "id": 1,
+      "mensagem": "esse é um teste de mensagem da resposta 1 e o novo autor",
+      "solucao": "teste da solução aqui também pra ficar 1 daora o bgl novo autor",
+      "autor": "Sou o root",
+      "data_criacao": "2024-07-11T12:08:35",
+      "topico_id": 1
+    }
+  ],
+  "number": 0,
+  "sort": {
+    "sorted": true,
+    "unsorted": false,
+    "empty": false
+  },
+  "numberOfElements": 1,
+  "empty": false
+}
+```
+
+<br>
+
+**POST** : Cadastra uma nova resposta para o tópico selecionado. O usuário precisa estar cadastrado e autenticado para que possa cadastrar uma nova resposta para o tópico.
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "mensagem": "string",
+  "solucao": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+<br>
+
+### Endpoint ``/topicos/{topico_id}/respostas/{resposta_id}``
+
+Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
+
+Onde: ``{resposta_id}`` = id da resposta do tópico que deseja detalhar.
+
+**GET** : Detalha a resposta selecionado do tópico. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint
+* Não é necessário inserir Json no corpo do envio da requisição.
+* Resposta da consulta com ``/topicos/1/respostas/1``:
+
+```
+{
+  "id": 1,
+  "mensagem": "esse é um teste de mensagem da resposta 1 e o novo autor",
+  "solucao": "teste da solução aqui também pra ficar 1 daora o bgl novo autor",
+  "autor": "Sou o root",
+  "data_criacao": "2024-07-11T12:08:35",
+  "topico_id": 1
+}
+```
+
+<br>
+
+**DELETE** : O usuário autenticado necessita ter o perfil de administrador ou ser o próprio autor da resposta para que possa realizar a exclusão da mesma.
+* Não é necessário inserir Json no corpo do envio da requisição.
+
+<br>
+
+### Endpoint ``/perfil``
+
+**POST** : Cadastra novos perfis ao sistema. O usuário autenticado necessita ter o perfil de administrador para cadastrar novos perfis.
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "nome": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+<br>
+
+### Endpoint ``/login``
+
+**POST** : Se autentica no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "email": "string",
+  "senha": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+* Resposta da consulta da requisição:
+
+```
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgRm9ydW0gQWx1cmEiLCJzdWIiOiJqb3JnZS5mb250b3VyYUBleGVtcGxvLmNvbSIsImlkIjo0LCJleHAiOjE3MjA3NjAwNTB9.JqCmG2WG6m4Ar1yAHHNc8PAf7ic5swDYM8NHiHLOvck"
+}
+```
+
+<br>
+
+### Endpoint ``/curso``
+
+**POST** : Cadastra um novo curso no sistema. O usuário precisa estar cadastrado e autenticado para cadastrar um novo curso. O curso não pode possuir nome igual a qualquer outro curso já cadastrado no sistema.
+
+* Envio do modelo do corpo da requisição para envio obrigatório do Json para cadastro de novo tópico com o método de requisição POST:
+
+```
+{
+  "nome": "string",
+  "categoria": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+<br>
