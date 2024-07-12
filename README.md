@@ -1,8 +1,129 @@
 # API Rest do Forum Hub da Alura
 
-API para o back-end do fórum hub.
+API para o
 
-## Endpoints
+## Tecnologias utilizadas
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+
+## Regras de negócio
+
+A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
+
+Cujo dados de login são:
+
+Login: admin@forumhubalura.com
+
+Senha: root1234
+
+ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root padrão logo que se inicializa a aplicação pela primeira vez.
+
+## Alterando dados de login e senha do usuário root padrão
+
+1. Prepare uma requisição POST para o Endpoint ``/login``
+2. Coloque no corpo da requisição o seguinte Json:
+   
+   ```
+    {
+    	"email" : "admin@forumhubalura.com",
+    	"senha" : "root1234"
+    }
+   ```
+   
+3. Copie o token que foi retornado no corpo da resposta da requisição e use-o para se autenticar com o Bearer Token em cada requisição que necessitar a autenticação.
+4. Prepare uma requisição PUT para o Endpoint ``/usuarios``
+5. Coloque no corpo da requisição o seguinte Json:
+   
+   ```
+    {
+      "email": "digite_um_email_valido",
+      "senha": "digite_uma_senha_valida"
+    }
+   ```
+   
+6. Feito isso sua senha está alterada e agora sua aplicação segura.
+
+## Diagrama do banco de dados
+
+![Screenshot_20240711_191805](https://github.com/user-attachments/assets/acb65ae8-804d-4c55-992a-919f18081090)
+
+## Descrição dos Endpoints
+
+### Endpoint ``/usuarios``
+
+**POST** : Cadastra um novo usuário no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint.
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "nome": "string",
+  "email": "string",
+  "senha": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+<br>
+
+**GET** : O usuário precisa estar cadastrado e autenticado para que possa detalhar o próprio perfil.
+* Não é necessário inserir Json no corpo do envio da requisição.
+* Resposta da consulta:
+
+```
+{
+  "id": 4,
+  "nome": "Jorge Fontoura Neto",
+  "email": "jorge.fontoura@exemplo.com",
+  "perfis": [
+    "USER"
+  ]
+}
+```
+
+<br>
+
+**PUT** : O usuário precisa estar cadastrado e autenticado para que possa atualizar o próprio perfil. Somente quem pode adicionar novos perfis ao próprio usuário é o usuário com perfil de administrador
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "nome": "string",
+  "email": "string",
+  "senha": "string",
+  "perfis_id": [
+    0
+  ]
+}
+```
+
+Onde: Nenhum dos campos é obrigatório
+
+<br>
+
+### Endpoint ``/login``
+
+**POST** : Se autentica no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint
+* Envio do modelo da consulta da requisição:
+
+```
+{
+  "email": "string",
+  "senha": "string"
+}
+```
+
+Onde: Todos os campos são obrigatórios.
+
+* Resposta da consulta da requisição:
+
+```
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgRm9ydW0gQWx1cmEiLCJzdWIiOiJqb3JnZS5mb250b3VyYUBleGVtcGxvLmNvbSIsImlkIjo0LCJleHAiOjE3MjA3NjAwNTB9.JqCmG2WG6m4Ar1yAHHNc8PAf7ic5swDYM8NHiHLOvck"
+}
+```
+
+<br>
 
 ### Endpoint ``/topicos``
 
@@ -141,58 +262,6 @@ Onde: Nenhum dos campos é obrigatório. O status deve ser preenchido com uma da
 
 <br>
 
-### Endpoint ``/usuarios``
-
-**GET** : O usuário precisa estar cadastrado e autenticado para que possa detalhar o próprio perfil.
-* Não é necessário inserir Json no corpo do envio da requisição.
-* Resposta da consulta:
-
-```
-{
-  "id": 4,
-  "nome": "Jorge Fontoura Neto",
-  "email": "jorge.fontoura@exemplo.com",
-  "perfis": [
-    "USER"
-  ]
-}
-```
-
-<br>
-
-**PUT** : O usuário precisa estar cadastrado e autenticado para que possa atualizar o próprio perfil. Somente quem pode adicionar novos perfis ao próprio usuário é o usuário com perfil de administrador
-* Envio do modelo da consulta da requisição:
-
-```
-{
-  "nome": "string",
-  "email": "string",
-  "senha": "string",
-  "perfis_id": [
-    0
-  ]
-}
-```
-
-Onde: Nenhum dos campos é obrigatório
-
-<br>
-
-**POST** : Cadastra um novo usuário no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint.
-* Envio do modelo da consulta da requisição:
-
-```
-{
-  "nome": "string",
-  "email": "string",
-  "senha": "string"
-}
-```
-
-Onde: Todos os campos são obrigatórios.
-
-<br>
-
 ### Endpoint ``/usuarios/{usuario_id}``
 
 Onde: ``{usuario_id}`` = id do usuário que deseja acessar.
@@ -322,30 +391,6 @@ Onde: ``{resposta_id}`` = id da resposta do tópico que deseja detalhar.
 ```
 
 Onde: Todos os campos são obrigatórios.
-
-<br>
-
-### Endpoint ``/login``
-
-**POST** : Se autentica no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições POST para este Endpoint
-* Envio do modelo da consulta da requisição:
-
-```
-{
-  "email": "string",
-  "senha": "string"
-}
-```
-
-Onde: Todos os campos são obrigatórios.
-
-* Resposta da consulta da requisição:
-
-```
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgRm9ydW0gQWx1cmEiLCJzdWIiOiJqb3JnZS5mb250b3VyYUBleGVtcGxvLmNvbSIsImlkIjo0LCJleHAiOjE3MjA3NjAwNTB9.JqCmG2WG6m4Ar1yAHHNc8PAf7ic5swDYM8NHiHLOvck"
-}
-```
 
 <br>
 
