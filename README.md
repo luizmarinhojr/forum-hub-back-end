@@ -26,7 +26,7 @@ Gerenciamento completo de um fórum web.
 <a id="diagrama"></a>
 ## Diagrama do banco de dados
 
-![Screenshot_20240711_191805](https://github.com/user-attachments/assets/acb65ae8-804d-4c55-992a-919f18081090)
+![Screenshot_20240712_160951](https://github.com/user-attachments/assets/d2d49b07-409f-491c-a9b9-fa807923e7c7)
 
 <br>
 
