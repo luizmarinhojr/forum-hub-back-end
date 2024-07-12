@@ -2,53 +2,26 @@
 
 Gerenciamento completo de um fórum web.
 
+<a id="tecnologias-utilizadas"></a>
 ## Tecnologias utilizadas
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 
-## Regras de negócio
+## Conteúdo
 
-A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
+* [Tecnologias utilizadas](#tecnologias-utilizadas)
+* [Diagrama do banco de dados](#diagrama)
+* [Descrição dos Endpoints](#endpoints)
+   * [/topicos](#topicos)
 
-Cujo dados de login são:
-
-Login: admin@forumhubalura.com
-
-Senha: root1234
-
-ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root padrão logo que se inicializa a aplicação pela primeira vez.
-
-## Alterando dados de login e senha do usuário root padrão
-
-1. Prepare uma requisição POST para o Endpoint ``/login``
-2. Coloque no corpo da requisição o seguinte Json:
-   
-   ```
-    {
-    	"email" : "admin@forumhubalura.com",
-    	"senha" : "root1234"
-    }
-   ```
-   
-3. Copie o token que foi retornado no corpo da resposta da requisição e use-o para se autenticar com o Bearer Token em cada requisição que necessitar a autenticação.
-4. Prepare uma requisição PUT para o Endpoint ``/usuarios``
-5. Coloque no corpo da requisição o seguinte Json:
-   
-   ```
-    {
-      "email": "digite_um_email_valido",
-      "senha": "digite_uma_senha_valida"
-    }
-   ```
-6. Cole o token no campo que se refere a Auth e Bearer Token.
-7. Feito isso sua senha estará alterada e sua aplicação segura.
-
+<a id="diagrama"></a>
 ## Diagrama do banco de dados
 
 ![Screenshot_20240711_191805](https://github.com/user-attachments/assets/acb65ae8-804d-4c55-992a-919f18081090)
 
 <br>
 
+<a id="endpoints"></a>
 ## Descrição dos Endpoints
 
 ### Endpoint ``/usuarios``
@@ -127,6 +100,7 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
+<a id="topicos"></a>
 ### Endpoint ``/topicos``
 
 **GET** : Lista todos os tópicos cadastrados. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
@@ -412,3 +386,38 @@ Onde: Todos os campos são obrigatórios.
 Onde: Todos os campos são obrigatórios.
 
 <br>
+
+## Informações de Segurança
+
+A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
+
+Cujo dados de login são:
+
+Login: admin@forumhubalura.com
+
+Senha: root1234
+
+**ATENÇÃO**: É recomendado alterar os dados de login e senha do usuário root padrão logo que se inicializa a aplicação pela primeira vez, para isso, siga as etapas abaixo:
+
+1. Prepare uma requisição POST para o Endpoint ``/login``
+2. Coloque no corpo da requisição o seguinte Json:
+   
+   ```
+    {
+    	"email" : "admin@forumhubalura.com",
+    	"senha" : "root1234"
+    }
+   ```
+   
+3. Copie o token que foi retornado no corpo da resposta da requisição e use-o para se autenticar com o Bearer Token em cada requisição que necessitar a autenticação.
+4. Prepare uma requisição PUT para o Endpoint ``/usuarios``
+5. Coloque no corpo da requisição o seguinte Json:
+   
+   ```
+    {
+      "email": "digite_um_email_valido",
+      "senha": "digite_uma_senha_valida"
+    }
+   ```
+6. Cole o token no campo que se refere a Auth e Bearer Token.
+7. Feito isso sua senha estará alterada e sua aplicação segura.
