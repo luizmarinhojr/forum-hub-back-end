@@ -287,7 +287,7 @@ Onde: Todos os campos são obrigatórios.
 
 Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
 
-**GET** : Lista todas as respostas do tópico selecionado. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint
+**GET** : Lista todas as respostas do tópico selecionado. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
 
 * Envio do modelo da consulta da requisição obrigatório:
 
@@ -359,7 +359,7 @@ Onde: ``{topico_id}`` = id do tópico que deseja acessar as respostas.
 
 Onde: ``{resposta_id}`` = id da resposta do tópico que deseja detalhar.
 
-**GET** : Detalha a resposta selecionado do tópico. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint
+**GET** : Detalha a resposta selecionada do tópico. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
 * Não é necessário inserir Json no corpo do envio da requisição.
 * Resposta da consulta com ``/topicos/1/respostas/1``:
 
@@ -376,7 +376,7 @@ Onde: ``{resposta_id}`` = id da resposta do tópico que deseja detalhar.
 
 <br>
 
-**DELETE** : O usuário autenticado necessita ter o perfil de administrador ou ser o próprio autor da resposta para que possa realizar a exclusão da mesma.
+**DELETE** : O usuário autenticado necessita ter o perfil de administrador ou ser o próprio autor da resposta para que possa realizar a exclusão da mesma. Caso a resposta que deseje excluir esteja marcada como solução do tópico, a exclusão não será autorizada, nem mesmo com o perfil de administrador.
 * Não é necessário inserir Json no corpo do envio da requisição.
 
 <br>
