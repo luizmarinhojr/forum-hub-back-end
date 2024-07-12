@@ -1,4 +1,4 @@
-# API Rest do Forum Hub da Alura
+# API Rest do Forum Hub
 
 Gerenciamento completo de um fórum web.
 
