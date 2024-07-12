@@ -6,8 +6,6 @@ API para o
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 
-<br>
-
 ## Regras de negócio
 
 A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
@@ -19,8 +17,6 @@ Login: admin@forumhubalura.com
 Senha: root1234
 
 ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root padrão logo que se inicializa a aplicação pela primeira vez.
-
-<br>
 
 ## Alterando dados de login e senha do usuário root padrão
 
