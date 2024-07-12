@@ -6,6 +6,8 @@ API para o
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 
+<br>
+
 ## Regras de negócio
 
 A aplicação vem com 3 perfis ("ROLE_ADM", "USER", "PROFESSOR") e um usuário padrão pré cadastrado, que é o usuário root.
@@ -17,6 +19,8 @@ Login: admin@forumhubalura.com
 Senha: root1234
 
 ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root padrão logo que se inicializa a aplicação pela primeira vez.
+
+<br>
 
 ## Alterando dados de login e senha do usuário root padrão
 
@@ -43,9 +47,13 @@ ATENÇÃO: É recomendado alterar os dados de login e senha do usuário root pad
    
 6. Feito isso sua senha está alterada e agora sua aplicação segura.
 
+<br>
+
 ## Diagrama do banco de dados
 
 ![Screenshot_20240711_191805](https://github.com/user-attachments/assets/acb65ae8-804d-4c55-992a-919f18081090)
+
+<br>
 
 ## Descrição dos Endpoints
 
