@@ -1,4 +1,6 @@
 package com.luizmarinho.forumhub.domain.perfil;
 
-public record PerfilDTOEntrada(String nome) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record PerfilDTOEntrada(@NotEmpty String nome) {
 }
