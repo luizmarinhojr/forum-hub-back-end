@@ -1,6 +1,6 @@
 # API Rest do Forum Hub da Alura
 
-API para o
+Gerenciamento completo de um fórum web.
 
 ## Tecnologias utilizadas
 
