@@ -6,8 +6,6 @@ import com.luizmarinho.forumhub.domain.perfil.Perfil;
 import com.luizmarinho.forumhub.domain.perfil.PerfilRepository;
 import com.luizmarinho.forumhub.domain.usuario.validacoes.atualizacao.ValidadorUsuarioAtualizacao;
 import com.luizmarinho.forumhub.domain.usuario.validacoes.cadastro.ValidadorUsuarioCadastro;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UsuarioService {
