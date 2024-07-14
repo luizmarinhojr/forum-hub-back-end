@@ -68,21 +68,18 @@ Onde: Todos os campos são obrigatórios.
 
 <br>
 
-**PUT** : O usuário precisa estar cadastrado e autenticado para que possa atualizar o próprio perfil. Somente quem pode adicionar novos perfis ao próprio usuário é o usuário com perfil de administrador
+**PUT** : O usuário precisa estar cadastrado e autenticado para que possa atualizar o próprio perfil.
 * Envio do modelo da consulta da requisição:
 
 ```
 {
   "nome": "string",
   "email": "string",
-  "senha": "string",
-  "perfis_id": [
-    0
-  ]
+  "senha": "string"
 }
 ```
 
-Onde: Nenhum dos campos é obrigatório
+Onde: Nenhum dos campos é obrigatório.
 
 <br>
 
@@ -255,7 +252,7 @@ Onde: Nenhum dos campos é obrigatório. O status deve ser preenchido com uma da
 
 Onde: ``{usuario_id}`` = id do usuário que deseja acessar.
 
-**PATCH** : Atualiza o perfil de um determinado usuário. O usuário autenticado necessita ter o perfil de administrador para que possa adicionar perfis de outros usuários.
+**PATCH** : Atualiza somente o perfil de um determinado usuário. O usuário autenticado necessita ter o perfil de administrador para que possa adicionar perfis à outros usuários.
 * Envio do modelo da consulta da requisição:
 
 ```
@@ -389,7 +386,33 @@ Onde: Todos os campos são obrigatórios.
 <a id="curso"></a>
 ### Endpoint ``/curso``
 
-**POST** : Cadastra um novo curso no sistema. O usuário precisa estar cadastrado e autenticado para cadastrar um novo curso. O curso não pode possuir nome igual a qualquer outro curso já cadastrado no sistema.
+**GET** : Lista todos os cursos cadastrados no sistema. Não necessita estar cadastrado ou autenticado para enviar requisições GET para este Endpoint.
+* Não é necessário inserir Json no corpo do envio da requisição.
+* Resposta da consulta:
+
+```
+[
+	{
+		"id": 1,
+		"nome": "Java",
+		"categoria": "TECNOLOGIA"
+	},
+	{
+		"id": 2,
+		"nome": ".Net",
+		"categoria": "TECNOLOGIA"
+	},
+	{
+		"id": 3,
+		"nome": "C#",
+		"categoria": "TECNOLOGIA"
+	}
+]
+```
+
+<br>
+
+**POST** : Cadastra um novo curso no sistema. O usuário precisa estar cadastrado, autenticado e possuir o perfil de administrador ou professor para cadastrar um novo curso. O curso não pode possuir nome igual a qualquer outro curso já cadastrado no sistema.
 
 * Envio do modelo do corpo da requisição para envio obrigatório do Json para cadastro de novo tópico com o método de requisição POST:
 
