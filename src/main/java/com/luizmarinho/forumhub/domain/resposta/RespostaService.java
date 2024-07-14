@@ -29,8 +29,7 @@ public class RespostaService {
     @Autowired
     List<ValidadorRespostaCadastro> validadores;
 
-    public RespostaDTOSaida cadastrar(RespostaDTOEntrada respostaEntrada, Long topicoId, Authentication authentication) {
-        var usuario = (Usuario) authentication.getPrincipal();
+    public RespostaDTOSaida cadastrar(RespostaDTOEntrada respostaEntrada, Long topicoId, Usuario usuario) {
         var respostaDTO = new RespostaDTOEntrada(respostaEntrada.mensagem(), topicoId, respostaEntrada.solucao());
         validadores.forEach(d -> d.validar(respostaDTO));
         var topico = topicoRepository.getReferenceById(respostaDTO.topicoId());
@@ -68,8 +67,7 @@ public class RespostaService {
         throw new ValidacaoExceptionNotFound("Id da resposta informado não existe ou não pertence a esse tópico");
     }
 
-    public void excluir(Long id, Authentication authentication) {
-        var usuario = (Usuario) authentication.getPrincipal();
+    public void excluir(Long id, Usuario usuario) {
         var resposta = respostaRepository.findById(id);
         verificarRespostaId(resposta);
         boolean isAdmin = verificarIsAdmin(usuario);

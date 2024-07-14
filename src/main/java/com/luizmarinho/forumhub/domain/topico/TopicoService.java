@@ -14,8 +14,8 @@ import com.luizmarinho.forumhub.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +41,10 @@ public class TopicoService {
     private List<ValidadorAtualizacao> validadoresAtualizacao;
 
 
-    public TopicoDTOSaida cadastrar(Authentication authentication, TopicoDTOEntrada topicoEntrada) {
+    public TopicoDTOSaida cadastrar(Usuario usuarioAutenticado, TopicoDTOEntrada topicoEntrada) {
         validadoresCadastro.forEach(d -> d.validar(topicoEntrada));
         var curso = cursoRepository.getReferenceById(topicoEntrada.cursoId());
-        var usuario = usuarioRepository.getReferenceById(((Usuario) authentication.getPrincipal()).getId());
+        var usuario = usuarioRepository.getReferenceById(usuarioAutenticado.getId());
         Topico topico = new Topico(topicoEntrada, usuario, curso);
         topicoRepository.save(topico);
 
@@ -56,54 +56,52 @@ public class TopicoService {
     }
 
     public TopicoDTODetalharSaida detalhar(Long id) {
-        verificarTopicoId(id);
-        return new TopicoDTODetalharSaida(topicoRepository.getReferenceById(id));
+        var topico = verificarTopicoId(id);
+        return new TopicoDTODetalharSaida(topico);
     }
 
-    public TopicoDTOSaida atualizar(Long id, TopicoDTOAtualizacao topicoAtualizacao, Authentication authentication) {
+    public TopicoDTOSaida atualizar(Long id, TopicoDTOAtualizacao topicoAtualizacao, Usuario usuarioAutenticado) {
         validadoresAtualizacao.forEach(x -> x.validar(topicoAtualizacao));
-        verificarTopicoId(id);
-        var topicoBd = topicoRepository.getReferenceById(id);
-        var usuario = (Usuario) authentication.getPrincipal();
-        boolean ehAdmin = verificarIsAdmin(usuario);
+        var topico = verificarTopicoId(id);
+        boolean ehAdmin = verificarIsAdmin(usuarioAutenticado);
 
-        if (!ehAdmin && !topicoBd.getAutor().getId().equals(usuario.getId())) {
+        if (!ehAdmin && !topico.getAutor().getId().equals(usuarioAutenticado.getId())) {
             throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para alterar o tópico");
         }
 
         if (topicoAtualizacao.cursoId() != null) {
             var curso = cursoRepository.getReferenceById(topicoAtualizacao.cursoId());
-            topicoBd.setCurso(curso);
+            topico.setCurso(curso);
         }
 
-        topicoBd.atualizar(topicoAtualizacao);
+        topico.atualizar(topicoAtualizacao);
 
         verificarStatusESolucaoId(topicoAtualizacao);
         if (topicoAtualizacao.status().equals(StatusEnum.SOLUCIONADO)) {
             var resposta = respostaRepository.buscarRespostaPorTopico(id, topicoAtualizacao.solucaoId());
             verificarRespostaId(resposta);
-            topicoBd.setSolucaoResposta(resposta.get());
+            topico.setSolucaoResposta(resposta.get());
         }
 
-        return new TopicoDTOSaida(topicoBd);
+        return new TopicoDTOSaida(topico);
     }
 
-    public void excluir(Long id, Authentication authentication) {
-        var usuario = (Usuario) authentication.getPrincipal();
-        verificarTopicoId(id);
-        var topicoBd = topicoRepository.getReferenceById(id);
-        boolean isAdmin = verificarIsAdmin(usuario);
-        if (isAdmin || topicoBd.getAutor().getId().equals(usuario.getId())) {
+    public void excluir(Long id, Usuario usuarioAutenticado) {
+        var topicoBd = verificarTopicoId(id);
+        boolean isAdmin = verificarIsAdmin(usuarioAutenticado);
+        if (isAdmin || topicoBd.getAutor().getId().equals(usuarioAutenticado.getId())) {
             topicoRepository.deleteById(id);
         } else {
             throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para excluir o tópico");
         }
     }
 
-    private void verificarTopicoId(Long id) {
-        if (!topicoRepository.existsById(id)) {
+    private Topico verificarTopicoId(Long id) {
+        var topicoBd = topicoRepository.findById(id);
+        if (topicoBd.isEmpty()) {
             throw new ValidacaoExceptionNotFound("Id do tópico informado não existe");
         }
+        return topicoBd.get();
     }
 
     private void verificarStatusESolucaoId(TopicoDTOAtualizacao topicoAtualizacao) {

@@ -1,6 +1,7 @@
 package com.luizmarinho.forumhub.controller;
 
 import com.luizmarinho.forumhub.domain.topico.*;
+import com.luizmarinho.forumhub.domain.usuario.Usuario;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,12 +22,13 @@ public class TopicoController {
     @Autowired
     private TopicoService service;
 
-
     @PostMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados, Authentication authentication, UriComponentsBuilder uriBuilder) {
-        var topico = service.cadastrar(authentication, topicoDados);
+    public ResponseEntity cadastrar(@RequestBody @Valid TopicoDTOEntrada topicoDados,
+                                    @AuthenticationPrincipal Usuario usuario,
+                                    UriComponentsBuilder uriBuilder) {
+        var topico = service.cadastrar(usuario, topicoDados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.id()).toUri();
         return ResponseEntity.created(uri).body(topico);
     }
@@ -46,16 +48,18 @@ public class TopicoController {
     @PutMapping("/{id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid TopicoDTOAtualizacao topicoDados, Authentication authentication) {
-        var topico = service.atualizar(id, topicoDados, authentication);
+    public ResponseEntity atualizar(@PathVariable Long id,
+                                    @RequestBody @Valid TopicoDTOAtualizacao topicoDados,
+                                    @AuthenticationPrincipal Usuario usuario) {
+        var topico = service.atualizar(id, topicoDados, usuario);
         return ResponseEntity.ok(topico);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity excluir(@PathVariable Long id, Authentication authentication) {
-        service.excluir(id, authentication);
+    public ResponseEntity excluir(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) {
+        service.excluir(id, usuario);
         return ResponseEntity.noContent().build();
     }
 }

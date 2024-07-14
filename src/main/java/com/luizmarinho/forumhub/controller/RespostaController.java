@@ -3,6 +3,7 @@ package com.luizmarinho.forumhub.controller;
 import com.luizmarinho.forumhub.domain.resposta.RespostaDTOEntrada;
 import com.luizmarinho.forumhub.domain.resposta.RespostaDTOSaida;
 import com.luizmarinho.forumhub.domain.resposta.RespostaService;
+import com.luizmarinho.forumhub.domain.usuario.Usuario;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,22 +28,20 @@ public class RespostaController {
     @PostMapping
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity cadastrar(
-            @RequestBody @Valid RespostaDTOEntrada respostaEntrada,
-            @PathVariable("topico_id") Long topicoId,
-            Authentication authentication,
-            UriComponentsBuilder uriBuilder)
+    public ResponseEntity cadastrar(@RequestBody @Valid RespostaDTOEntrada respostaEntrada,
+                                    @PathVariable("topico_id") Long topicoId,
+                                    @AuthenticationPrincipal Usuario usuario,
+                                    UriComponentsBuilder uriBuilder)
     {
-        var resposta = service.cadastrar(respostaEntrada, topicoId, authentication);
+        var resposta = service.cadastrar(respostaEntrada, topicoId, usuario);
 
         var uri = uriBuilder.path("/resposta/{id}").buildAndExpand(resposta.id()).toUri();
         return ResponseEntity.created(uri).body(resposta);
     }
 
     @GetMapping
-    public ResponseEntity<Page<RespostaDTOSaida>> listar(
-            @PageableDefault(size = 10, sort = {"data_criacao"}, direction = Sort.Direction.DESC) Pageable paginacao,
-            @PathVariable("topico_id") Long topicoId)
+    public ResponseEntity<Page<RespostaDTOSaida>> listar(@PageableDefault(size = 10, sort = {"data_criacao"}, direction = Sort.Direction.DESC) Pageable paginacao,
+                                                         @PathVariable("topico_id") Long topicoId)
     {
         var pagina = service.listar(paginacao, topicoId);
         return ResponseEntity.ok(pagina);
@@ -59,8 +59,9 @@ public class RespostaController {
     @DeleteMapping("/{resposta_id}")
     @Transactional
     @SecurityRequirement(name = "bearer-key")
-    public ResponseEntity excluir(@PathVariable("resposta_id") Long id, Authentication authentication) {
-        service.excluir(id, authentication);
+    public ResponseEntity excluir(@PathVariable("resposta_id") Long id,
+                                  @AuthenticationPrincipal Usuario usuario) {
+        service.excluir(id, usuario);
         return ResponseEntity.noContent().build();
     }
 }

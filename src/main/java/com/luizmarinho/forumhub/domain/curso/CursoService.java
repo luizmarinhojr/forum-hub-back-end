@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CursoService {
 
@@ -19,5 +21,10 @@ public class CursoService {
         repository.save(curso);
 
         return curso;
+    }
+
+    public List<CursoDTOSaida> listar() {
+        var cursos = repository.findAll();
+        return cursos.stream().map(CursoDTOSaida::new).toList();
     }
 }

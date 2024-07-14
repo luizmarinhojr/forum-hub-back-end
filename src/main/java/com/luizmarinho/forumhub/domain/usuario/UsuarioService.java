@@ -8,7 +8,6 @@ import com.luizmarinho.forumhub.domain.usuario.validacoes.atualizacao.ValidadorU
 import com.luizmarinho.forumhub.domain.usuario.validacoes.cadastro.ValidadorUsuarioCadastro;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,33 +42,18 @@ public class UsuarioService {
         return new UsuarioDTOSaida(usuario);
     }
 
-    public UsuarioDTOSaida detalhar(Authentication authentication) {
-        var usuario = (Usuario) authentication.getPrincipal();
+    public UsuarioDTOSaida detalhar(Usuario usuario) {
         return new UsuarioDTOSaida(usuario);
     }
 
-    public UsuarioDTOSaida atualizar(UsuarioDTOAtualizacao usuarioAtualizacao, Authentication authentication) {
-        var usuario = (Usuario) authentication.getPrincipal();
-        if (usuarioAtualizacao.perfisId() != null) {
-            boolean isAdmin = verificarIsAdmin(usuario);
-            if (!isAdmin) {
-                throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para atualizar o perfil");
-            }
-
-            for (Long id : usuarioAtualizacao.perfisId()) {
-                var perfil = perfilRepository.findById(id);
-                perfil.ifPresent(usuario::adicionarPerfil);
-            }
-        }
+    public UsuarioDTOSaida atualizar(UsuarioDTOAtualizacao usuarioAtualizacao, Usuario usuario) {
         validadoresAtualizacao.forEach(d -> d.validar(usuarioAtualizacao));
         usuario.atualizarUsuario(usuarioAtualizacao);
         usuarioRepository.saveAndFlush(usuario);
         return new UsuarioDTOSaida(usuario);
-
     }
 
-    public UsuarioDTOSaida atualizarPerfilUsuarioEspecifico(Long usuarioId, UsuarioDTOPatch usuarioPatch, Authentication authentication) {
-        var usuarioAutenticado = (Usuario) authentication.getPrincipal();
+    public UsuarioDTOSaida atualizarPerfilUsuarioEspecifico(Long usuarioId, UsuarioDTOPatch usuarioPatch, Usuario usuarioAutenticado) {
         if (!verificarIsAdmin(usuarioAutenticado)) {
             throw new ValidacaoExceptionAuthorization("O usuário não possui permissão para atualizar o perfil de um usuário");
         }
